@@ -1,0 +1,13 @@
+extends layout
+block content
+    form(method="POST" action="/add")
+        label Title
+        input(name='title',type='text')
+
+        label Author
+        input(name='author',type='text')
+
+        label Body
+        textarea(name='body')
+
+        input(type='submit', value="Submit")

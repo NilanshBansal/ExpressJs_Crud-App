@@ -1,0 +1,11 @@
+extends layout
+block content
+    h1 #{article.title}
+    h2 #{article.author}
+    p #{article.body}
+
+    br
+    a(href="/edit/" + article.id) Edit
+    br
+    a.delete-article(href="#" data-id=article.id) Delete
+    

@@ -1,11 +1,11 @@
 extends layout
 block content
     h1 #{article.title}
-    h2 #{article.author}
+    h2 Written By #{article.author}
     p #{article.body}
 
     br
-    a(href="/articles/edit/" + article.id) Edit
+    a.btn.btn-default(href="/articles/edit/" + article.id) Edit
     br
-    a.delete-article(href="#" data-id=article.id) Delete
+    a.btn.btn-danger.delete-article(href="#" data-id=article.id) Delete
     

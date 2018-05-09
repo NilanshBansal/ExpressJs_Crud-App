@@ -1,10 +1,10 @@
 extends layout
 block content
     h1 #{title}
-    ul
+    ul.list-group
         each article, i in articles
-            li 
+            li.list-group-item 
                 a(href="/articles/" + article.id) #{article.title}
 
     br
-    a(href="/articles/add") Add Article
+    a.btn.btn-primary(href="/articles/add") Add Article

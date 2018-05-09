@@ -36,6 +36,7 @@ app.use(bodyParser.json());
 
 
 
+const expressValidator= require('express-validator');
 const flash=require('connect-flash');
 const session=require('express-session');
 
@@ -52,6 +53,26 @@ app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
+
+//Express Validator Middleware
+app.use(expressValidator({
+    errorFormatter:function(param,msg,value){
+        var namespace=param.split("."),
+        root=namespace.shift(),
+        formParam=root;
+
+        while(namespace.length){
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param:formParam,
+            msg:msg,
+            value:value
+        };
+    }
+}));
+
+
 
 
 //Route to display all Articles (Index Route)

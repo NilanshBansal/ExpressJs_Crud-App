@@ -22,6 +22,7 @@ router.post('/add',function(req,res){
             return;
         }
         else{
+            req.flash('success','Article added');            
             res.redirect('/');
         }
     });
@@ -53,6 +54,7 @@ router.post('/update/:id',function(req,res){
             return;
         }
         else{
+            req.flash('success','Article Updated');            
             res.redirect('/');
         }
     });
@@ -66,6 +68,7 @@ router.delete('/delete/:id',function(req,res){
         if(err){
             console.log(err);
         }
+        req.flash('danger','Article deleted!')
         res.send('Success');
     });
 });

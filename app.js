@@ -35,6 +35,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
+
+const flash=require('connect-flash');
+const session=require('express-session');
+
+// Express Session Middleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+  }))
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+
 //Route to display all Articles (Index Route)
 app.get('/',function(req,res){
     Article.find({},function(err,articles){

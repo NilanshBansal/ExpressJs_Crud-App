@@ -1,6 +1,6 @@
 extends layout
 block content
-    form(method="POST" action="/update/" + article.id)
+    form(method="POST" action="/articles/update/" + article.id)
         label Title
         input(type="text", name="title", value=article.title)
 

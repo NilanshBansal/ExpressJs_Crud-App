@@ -50,24 +50,17 @@ app.get('/',function(req,res){
     });
 });
 
-//View Single Article
-app.get('/view/:id',function(req,res){
-    Article.findById(req.params.id,function(err,article){
-        res.render('view_article',{
-            article:article
-        });
-    });
-})
+
 
 //Add Article
 //GET route
-app.get('/add',function(req,res){
+app.get('/articles/add',function(req,res){
     res.render('add_article');
 });
 
 
 //POST route
-app.post('/add',function(req,res){
+app.post('/articles/add',function(req,res){
     let article=new Article();
     article.title=req.body.title;
     article.author=req.body.author;
@@ -87,7 +80,7 @@ app.post('/add',function(req,res){
 //Edit Route
 
 //get route
-app.get('/edit/:id',function(req,res){
+app.get('/articles/edit/:id',function(req,res){
     Article.findById(req.params.id,function(err,article){
         res.render('edit_article',{
             article:article
@@ -96,7 +89,7 @@ app.get('/edit/:id',function(req,res){
 });
 
 //Post route
-app.post('/update/:id',function(req,res){
+app.post('/articles/update/:id',function(req,res){
     let article = {};
     article.title=req.body.title;
     article.author=req.body.author;
@@ -116,7 +109,7 @@ app.post('/update/:id',function(req,res){
 });
 
 //Delete Route
-app.delete('/delete/:id',function(req,res){
+app.delete('/articles/delete/:id',function(req,res){
     let query={_id:req.params.id};
 
     Article.remove(query,function(err){
@@ -126,3 +119,12 @@ app.delete('/delete/:id',function(req,res){
         res.send('Success');
     });
 });
+
+//View Single Article
+app.get('/articles/:id',function(req,res){
+    Article.findById(req.params.id,function(err,article){
+        res.render('view_article',{
+            article:article
+        });
+    });
+})

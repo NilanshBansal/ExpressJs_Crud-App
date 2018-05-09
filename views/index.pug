@@ -4,7 +4,7 @@ block content
     ul
         each article, i in articles
             li 
-                a(href="/view/" + article.id) #{article.title}
+                a(href="/articles/" + article.id) #{article.title}
 
     br
-    a(href="/add") Add Article
+    a(href="/articles/add") Add Article

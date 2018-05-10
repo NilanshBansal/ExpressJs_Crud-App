@@ -94,3 +94,7 @@ app.get('/',function(req,res){
 let articleRoutes=require("./routes/articles");
 app.use("/articles",articleRoutes);
 
+// User Routes
+let userRoutes=require("./routes/users");
+app.use("/users",userRoutes);
+

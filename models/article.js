@@ -9,6 +9,10 @@ let articleSchema =  mongoose.Schema({
         type:String,
         required:true
     },
+    created_by:{
+        type:String,
+        required:true
+    },
     body:{
         type:String,
         required:true

@@ -2,9 +2,11 @@ const express= require('express');
 const router = express.Router();
 let Article = require('../models/article');
 
+let User = require('../models/user');
+
 //Add Article
 //GET route
-router.get('/add',function(req,res){
+router.get('/add',ensureAuthenticated,function(req,res){
     res.render('add_article');
 });
 
@@ -29,7 +31,7 @@ router.post('/add',function(req,res){
         article.title=req.body.title;
         article.author=req.body.author;
         article.body=req.body.body;
-    
+        article.created_by=req.user._id;
         article.save(function(err){
             if(err){
                 console.log(err);
@@ -46,8 +48,12 @@ router.post('/add',function(req,res){
 //Edit Route
 
 //get route
-router.get('/edit/:id',function(req,res){
+router.get('/edit/:id',ensureAuthenticated,function(req,res){
     Article.findById(req.params.id,function(err,article){
+        if(article.created_by != req.user.id){
+            req.flash('danger','Not Authorized !');
+            return res.redirect('/');
+        }
         res.render('edit_article',{
             article:article
         });
@@ -77,24 +83,50 @@ router.post('/update/:id',function(req,res){
 
 //Delete Route
 router.delete('/delete/:id',function(req,res){
+    if(!req.user.id){
+        res.status(500).send();
+    }
+
     let query={_id:req.params.id};
 
-    Article.remove(query,function(err){
-        if(err){
-            console.log(err);
+    Article.findById(req.params.id,function(err,article){
+        if(article.created_by != req.user.id){
+            res.status(500).send();
         }
-        req.flash('danger','Article deleted!')
-        res.send('Success');
+        else{
+            Article.remove(query,function(err){
+                if(err){
+                    console.log(err);
+                }
+                req.flash('danger','Article deleted!');
+                res.send('Success');
+            });
+        }
     });
 });
 
-//View Single Article
+//View Single article
 router.get('/:id',function(req,res){
     Article.findById(req.params.id,function(err,article){
-        res.render('view_article',{
-            article:article
+        User.findById(article.created_by,function(err,user){
+            res.render('view_article',{
+                article:article,
+                author: user.name
+            });
         });
     });
-})
+});
+
+//Access Control
+function ensureAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    else{
+        req.flash('danger','Please login');
+        res.redirect('/users/login');
+    }
+}
+
 
 module.exports=router;

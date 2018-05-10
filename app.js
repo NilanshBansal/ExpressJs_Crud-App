@@ -2,6 +2,10 @@ let express=require('express');
 let path=require('path');
 let app=express();
 
+const config=require("./config/database");
+
+const passport = require('passport');
+
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','pug');
 
@@ -15,7 +19,7 @@ app.listen(3000,function(){
 
 //Mongoose Config
 let mongoose =require('mongoose');
-mongoose.connect('mongodb://localhost/articlesDb');
+mongoose.connect(config.database);
 let db=mongoose.connection;
 
 db.on('error',function(err){
@@ -72,8 +76,16 @@ app.use(expressValidator({
     }
 }));
 
+//Passport Config
+require('./config/passport')(passport);
+//Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
-
+app.get('*',function(req,res,next){
+    res.locals.user =req.user || null;
+    next();
+});
 
 //Route to display all Articles (Index Route)
 app.get('/',function(req,res){

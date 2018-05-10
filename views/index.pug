@@ -1,10 +1,8 @@
 extends layout
 block content
-    .btn-group
-        a.btn.btn-primary(href='/users/register') Register
-        a.btn.btn-success(href='/users/login') Login
-        a.btn.btn-warning(href='/articles/add') Add Article
+    br
     h1 #{title}
+    br
     ul.list-group
         each article, i in articles
             li.list-group-item 
